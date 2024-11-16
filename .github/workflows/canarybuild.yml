@@ -24,6 +24,7 @@ jobs:
         cmake ..
         $content = @"
         #include <libhat/Process.hpp>
+        #include <string>
         
         namespace hat::process {
         
