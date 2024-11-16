@@ -21,18 +21,22 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake ..
-        echo #include ^<libhat/Process.hpp^> > temp.txt
-        echo #include ^<string^> >> temp.txt
-        echo namespace hat::process { >> temp.txt
-        echo     module_t module_at(uintptr_t address) { >> temp.txt
-        echo        return module_t{address}; >> temp.txt
-        echo    } >> temp.txt
-        echo    module_t module_at(std::byte* address) { >> temp.txt
-        echo        return module_at(reinterpret_cast^<uintptr_t^>(address)); >> temp.txt
-        echo    } >> temp.txt
-        echo } >> temp.txt
-        move /Y temp.txt D:\a\flarial-dll\flarial-dll\build\_deps\libhat-src\src\Process.cpp
+        $content = @"
+        #include <libhat/Process.hpp>
+        
+        namespace hat::process {
+        
+            module_t module_at(uintptr_t address) {
+                return module_t{address};
+            }
+        
+            module_t module_at(std::byte* address) {
+                return module_at(reinterpret_cast<uintptr_t>(address));
+            }
+        }
+        "@
+        
+        Set-Content D:\a\flarial-dll\flarial-dll\build\_deps\libhat-src\src\Process.cpp -Value $content -Force
         cmake --build .
     - name: Confirm Test
       run: dcho "This message should show up if the thing ran sucessfully"
