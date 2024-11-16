@@ -16,11 +16,12 @@ jobs:
       uses: jwlawson/actions-setup-cmake@v2
       with:
         cmake-version: '3.31.x'
-    - name: Build Flarial
+    - name: Patch libhat
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
         mkdir build
         cd build
+        cmake ..
         $content = @"
         #include <libhat/Process.hpp>
         
@@ -35,8 +36,9 @@ jobs:
             }
         }
         "@
-        
-        Set-Content ..\libhat-src\src\Process.cpp -Value $content -Force
-        cmake --build .
+        Get-ChildItem -Path "D:\" -Filter "Process.cpp" -Recurse
+        # Set-Content ..\libhat-src\src\Process.cpp -Value $content -Force
+    - name: Build Flarial
+      run: cmake --build .
     - name: Confirm Test
       run: dcho "This message should show up if the thing ran sucessfully"
