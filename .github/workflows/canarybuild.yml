@@ -1,0 +1,26 @@
+name: Build Flarial from Source
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Setup CMake
+      uses: jwlawson/actions-setup-cmake@v2
+      with:
+        cmake-version: '3.16.x'
+    - name: Build Flarial
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: |
+        mkdir build
+        cd build
+        camke ..
+        camke --build .
+    - name: Confirm Test
+      run: dcho "This message should show up if the thing ran sucessfully"
