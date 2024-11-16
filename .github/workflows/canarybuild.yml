@@ -1,7 +1,8 @@
 name: Build Flarial from Source
+
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
