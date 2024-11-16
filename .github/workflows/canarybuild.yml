@@ -36,9 +36,12 @@ jobs:
             }
         }
         "@
-        Get-ChildItem -Path "D:\" -Filter "Process.cpp" -Recurse
-        # Set-Content ..\libhat-src\src\Process.cpp -Value $content -Force
+        # Get-ChildItem -Path "D:\" -Filter "Process.cpp" -Recurse
+        Set-Content  D:\a\flarial-dll\flarial-dll\build\_deps\libhat-src\src\Process.cpp -Value $content -Force
     - name: Build Flarial
-      run: cmake --build .
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: |
+        cd build
+        cmake --build .
     - name: Confirm Test
       run: dcho "This message should show up if the thing ran sucessfully"
